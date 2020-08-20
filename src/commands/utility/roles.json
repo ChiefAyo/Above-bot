@@ -1,0 +1,40 @@
+{
+    "planets": [
+        {
+            "name": "Mercury",
+            "colour": "#787773"
+        },
+        {
+            "name": "Venus",
+            "colour": "#bf6a2e"
+        },
+        {
+            "name": "Earth",
+            "colour": "#218f1f"
+        },
+        {
+            "name": "Mars",
+            "colour": "#c73510"
+        },
+        {
+            "name": "Jupiter",
+            "colour": "#cfae53"
+        },
+        {
+            "name": "Saturn",
+            "colour": "#d4c18e"
+        },
+        {
+            "name": "Uranus",
+            "colour": "#a6ceed"
+        },
+        {
+            "name": "Neptune",
+            "colour": "#1e4869"
+        },
+        {
+            "name": "Pluto",
+            "colour": "#e0a799"
+        }
+    ]
+}
