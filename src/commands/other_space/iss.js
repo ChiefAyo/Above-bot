@@ -34,8 +34,10 @@ async function display(result) {
         .addField('Latitude:', result.latitude, false)
         .addField('Longitude:', result.longitude, false);
 
+        const latitude = result.latitude;
+        const longitude = result.longitude;
 
-    const locationCheck = await fetch(`https://api.wheretheiss.at/v1/coordinates/${result.latitude},${result.longitude}`).catch(error => console.log(error));
+    const locationCheck = await fetch(`https://api.wheretheiss.at/v1/coordinates/${latitude},${longitude}`).catch(error => console.log(error));
     const locationJson = await locationCheck.json().catch(error => {
         console.log(error);
         iSSEmbed.addField('Location:', 'Unable to locate country/timezone');
