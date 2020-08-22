@@ -23,10 +23,12 @@ module.exports = {
             const longitude = (Math.random() * (Math.floor(maxLongitude) - Math.ceil(-maxLongitude) + 1) + Math.ceil(-maxLongitude));
             console.log(`lon=${longitude}`);
 
+            // makes fetch request to NASA API
             const result = await fetch(`https://api.nasa.gov/planetary/earth/assets?lon=${longitude}&lat=${latitude}&api_key=${NASA_KEY}`);
             const resultJson = await result.json().catch(error => console.log(error));
 
             console.log(resultJson);
+            return message.channel.send(showEarth(resultJson, latitude, longitude));
         }
     },
 };
@@ -36,10 +38,26 @@ module.exports = {
  * Creates an embed to display the image of the earth
  * @param {json} result json object containing data returned from earth image request
  */
-function showEarth(result) {
+function showEarth(result, lat, lon) {
 
-    const earthEmbed = new Discord.MessageEmbed()
+    if(!result.msg === 'No imagery for specified date.') {
+        const earthEmbed = new Discord.MessageEmbed()
         .setColor('#218f1f')
-        .setTitle('Random Earth Picture');
+        .setTitle('Random Earth Picture')
+        .setURL(result.url)
+        .setImage(result.url)
+        .setImage(`Image from Lat: ${lat}, Lon: ${lon}`)
+        .setFooter(`Image provided by NASA LANDSAT imagery API • Date: ${result.date}`);
+
+        return earthEmbed;
+    } else {
+
+        const earthEmbed = new Discord.MessageEmbed()
+        .setColor('#218f1f')
+        .setTitle('Random Earth Picture')
+        .setDescription('No recent imagery for location');
+
+        return earthEmbed;
+    }
 
 }
