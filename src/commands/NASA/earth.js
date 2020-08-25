@@ -24,7 +24,7 @@ module.exports = {
             console.log(`lon=${longitude}`);
 
             // makes fetch request to NASA API
-            const result = await fetch(`https://api.nasa.gov/planetary/earth/assets?lon=${longitude}&lat=${latitude}&api_key=${NASA_KEY}`);
+            const result = await fetch(`https://api.nasa.gov/planetary/earth/assets?&dim=100lon=${longitude}&lat=${latitude}&api_key=${NASA_KEY}`);
             const resultJson = await result.json().catch(error => console.log(error));
 
             console.log(resultJson);
@@ -40,13 +40,15 @@ module.exports = {
  */
 function showEarth(result, lat, lon) {
 
-    if(!result.msg === 'No imagery for specified date.') {
+    // console.log(typeof (result));
+
+    if(!Object.prototype.hasOwnProperty.call(result, 'msg')) {
         const earthEmbed = new Discord.MessageEmbed()
         .setColor('#218f1f')
         .setTitle('Random Earth Picture')
         .setURL(result.url)
         .setImage(result.url)
-        .setImage(`Image from Lat: ${lat}, Lon: ${lon}`)
+        .setDescription(`Image from Lat: ${lat}, Lon: ${lon}`)
         .setFooter(`Image provided by NASA LANDSAT imagery API • Date: ${result.date}`);
 
         return earthEmbed;
