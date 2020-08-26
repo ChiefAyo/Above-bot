@@ -36,11 +36,11 @@ client.on('message', message => {
 
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
+	if (!command) return;
+
 	if (command.args && !args.length) {
 		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
 	}
-
-	if (!command) return;
 
 
 	if (!cooldowns.has(command.name)) {
