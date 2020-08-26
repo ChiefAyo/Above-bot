@@ -7,7 +7,7 @@ module.exports = {
     name: 'apod',
     description: 'Retrieves the current NASA astronomy picture of the day for the current day \n or a chosen day',
     aliases: ['pod'],
-    usage: [' ', 'date (YYYY MM DD)'],
+    usage: [' ', 'date (YYYY-MM-DD)'],
     async execute(message, args) {
 
         if (!args.length) {
@@ -84,7 +84,7 @@ function embed(result) {
         const apodEmbed = new Discord.MessageEmbed()
             .setColor('#000000')
             .setTitle(`Astronomony Picture of the Day: ${result.title}`)
-            .setURL(result.hdurl)
+            .setURL(result.url)
             .setDescription(result.explanation)
             .setFooter(`Copyright: ${result.copyright} • ${result.date}`);
 

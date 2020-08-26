@@ -1,5 +1,7 @@
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
+require('dotenv').config;
+const GOOGLE_KEY = process.env.GOOGLE_API_GEO_KEY;
 
 module.exports = {
     name: 'iss',
@@ -37,7 +39,8 @@ async function display(result) {
         const latitude = result.latitude;
         const longitude = result.longitude;
 
-    const locationCheck = await fetch(`https://api.wheretheiss.at/v1/coordinates/${latitude},${longitude}`).catch(error => console.log(error));
+    // TODO need some way of being able to get location from latlon, gooogleapi needs billing :(
+    const locationCheck = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_KEY}`).catch(error => console.log(error));
     const locationJson = await locationCheck.json().catch(error => {
         console.log(error);
         iSSEmbed.addField('Location:', 'Unable to locate country/timezone');
@@ -46,7 +49,8 @@ async function display(result) {
     });
 
     console.log(locationJson);
-    const location = `${locationJson.timezone_id} • ${locationJson.country_code}`;
+    // const location = `${locationJson.results} • ${locationJson.country_code}`;
+    const location = '1';
 
     iSSEmbed.addField('Location:', location, false);
     iSSEmbed.setFooter(`Data provided by 'wheretheiss.at'`);
