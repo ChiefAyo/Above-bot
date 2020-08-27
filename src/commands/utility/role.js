@@ -10,9 +10,10 @@ module.exports = {
 
         // creates roles if this is the first time the command is being used
         // currently its recreating the roles everytime the command is made
+        // TODO need to stop roles from being recreated when command used again
         roles.planets.forEach(element => {
             const role = element.name;
-            if (!message.member.guild.roles.cache.has(role)) {
+            if (!message.member.guild.roles.cache.find(r => r.name === role)) {
                 let isAdmin = false;
                 if (message.member.hasPermission(['ADMINISTRATOR'])) {
                     isAdmin = true;
@@ -35,19 +36,19 @@ module.exports = {
 
         // checks if the role exists on the server
         // command is also failing to assing roles to users, :( big sad
-        if (message.member.roles.cache.has(chosenRole)) {
+        if (chosenRole) {
             const user = message.author;
             let hasRole = false;
             let i = 0;
             while (!hasRole && i < roles.planets.length) {
-                if (user.roles.cache.some(role => role.name === roles.planets[i].name)) {
+                if (message.member.roles.cache.find(r => r.name === roles.planets[i].name)) {
+                    const oldRole = message.member.guild.roles.cache.find(role => role.name.toLowerCase() === roles.planets[i].name);
+                    message.member.roles.remove(oldRole);
                     hasRole = true;
-                    const oldRole = roles.planets[i].name;
-                    user.roles.remove(oldRole);
                 }
                 i++;
             }
-                user.roles.add(chosenRole);
+                message.member.roles.add(chosenRole);
         }
     },
 };
