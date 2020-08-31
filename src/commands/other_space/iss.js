@@ -37,8 +37,8 @@ async function display(result) {
         .addField('Latitude:', result.latitude, false)
         .addField('Longitude:', result.longitude, false);
 
-        const latitude = result.latitude;
-        const longitude = result.longitude;
+    const latitude = result.latitude;
+    const longitude = result.longitude;
 
     // TODO need some way of being able to get location from latlon, gooogleapi needs billing :(
     const locationCheck = await fetch(`https://geocode.xyz/${latitude},${longitude}?json=1&auth=${GEOCODEXYZ_KEY}`).catch(error => console.log(error));
@@ -51,10 +51,21 @@ async function display(result) {
 
     console.log(locationJson);
     // const location = `${locationJson.results} • ${locationJson.country_code}`;
-    const location = `${locationJson.city} • ${locationJson.prov} `;
+    let location = `${locationJson.city} • ${locationJson.prov} `;
+
+    if (Object.prototype.hasOwnProperty.call(locationJson, 'error')) {
+        console.log('has error');
+        if (Object.prototype.hasOwnProperty.call(locationJson.suggestion, 'south') && !(Object.keys(locationJson.suggestion.south.city).length === 0)) {
+            console.log('south');
+            location = `${locationJson.suggestion.south.city}`;
+        } else if (Object.prototype.hasOwnProperty.call(locationJson.suggestion, 'north') && !(Object.keys(locationJson.suggestion.north.city).length === 0)) {
+            console.log('south');
+            location = `${locationJson.suggestion.north.city}`;
+        }
+    }
 
     iSSEmbed.addField('Location:', location, false);
-    iSSEmbed.setFooter(`Data provided by 'wheretheiss.at'`);
+    iSSEmbed.setFooter(`Data provided by 'wheretheiss.at and Geocode.xyz'`);
 
     return iSSEmbed;
 }
